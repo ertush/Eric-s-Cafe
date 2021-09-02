@@ -9,7 +9,7 @@ import {
 
 import tailwind from 'tailwind-rn'
 
-import { icons, FONTS, COLORS, SIZES } from '../constants'
+import { icons,  COLORS, } from '../constants'
 import Card from './Card'
 
 const CartCard = ({ id, image, title, price, amount, deleteCb, navigation }) => {
@@ -74,16 +74,13 @@ const CartCard = ({ id, image, title, price, amount, deleteCb, navigation }) => 
 }
 
 const styles = StyleSheet.create({
-  cardWrapper: {
-    ...tailwind(`
+  cardWrapper: tailwind(`
    flex-row
    justify-between
    items-center
   `),
-    ...COLORS.shadow,
-  },
 
-  container: tailwind(`
+  container: {...tailwind(`
   flex-row
   justify-between
   py-2
@@ -91,9 +88,12 @@ const styles = StyleSheet.create({
   pl-2
   flex-1
   items-center
+  ml-2
   mt-6
   mb-4
   `),
+  ...COLORS.shadow
+},
 
   image: tailwind(`
   w-24
@@ -196,8 +196,10 @@ const styles = StyleSheet.create({
    items-center
    p-2
    ml-4
+   mr-1
    rounded-full
   `),
+  ...COLORS.shadow,
     backgroundColor: COLORS.secondary,
   },
 

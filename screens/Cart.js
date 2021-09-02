@@ -154,8 +154,8 @@ const Cart = ({ navigation, route }) => {
 
       {/* Order button */}
       <View style={styles.btnWrapper}>
-        <TouchableOpacity onPress={() => { navigation.navigate('Order') }} style={styles.orderBtn}>
-          <Text style={styles.orderText}>Order Now</Text>
+        <TouchableOpacity onPress={() => { navigation.navigate('Order') }} style={styles.checkoutBtn}>
+          <Text style={styles.orderText}>Check Out</Text>
           <Image source={icons.deliver} style={styles.orderImage} />
         </TouchableOpacity>
 
@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
     width: "68%"
   },
 
-  backBtn: tailwind(`
+  backBtn: {...tailwind(`
       flex-row 
       justify-center 
       items-center 
@@ -194,8 +194,10 @@ const styles = StyleSheet.create({
       bg-white 
       rounded-full
     `),
+    ...COLORS.shadow
+  },
 
-  chevron: {
+ chevron: {
     ...tailwind(`
     w-5
     h-5
@@ -217,7 +219,7 @@ const styles = StyleSheet.create({
 
   btnWrapper: tailwind(`flex-row justify-center items-center`),
 
-  orderBtn: {
+  checkoutBtn: {
     ...tailwind(`
     rounded-full
     flex-row
@@ -226,6 +228,7 @@ const styles = StyleSheet.create({
     p-3
     my-2
     `), 
+    ...COLORS.shadow,
     backgroundColor: COLORS.secondary,
     width: "62%",
   },

@@ -115,8 +115,9 @@ const baseCost = price
             ${index === 0 ? 'mr-2' : 'mx-2'}
             rounded-3xl
             border-2
+            justify-center
+            items-center
             ${state ? 'border-yellow-500' : 'border-gray-200' }
-
             `
           )}>
           <Text style={
@@ -180,7 +181,7 @@ marginHorizontal:SIZES.radius
          justify-center 
          items-center 
         `)}>
-         <Image source={icons.plus} style={{...tailwind('w-8 h-8'), tintColor:COLORS.primary}} />
+         <Image source={icons.plus} style={{...tailwind('w-8 h-8'),  tintColor:COLORS.primary}} />
          </TouchableOpacity>
 
          <Text style={tailwind('ml-4 text-xl font-bold')}>{quantity}</Text>
@@ -294,6 +295,7 @@ marginHorizontal:SIZES.radius
            px-4
            py-3
           `),
+          ...COLORS.shadow,
              backgroundColor:COLORS.secondary
           }
         }

@@ -176,6 +176,7 @@ nextBtn:{
 nextText:{...tailwind(`
   capitalize
   text-xl
+  text-white
   `),
   fontWeight: "700",
   }

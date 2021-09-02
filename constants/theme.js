@@ -18,14 +18,14 @@ export const COLORS = {
 
   //shadow
   shadow: {
-    shadowColor: "#000",
+    shadowColor: "#ffe",
     shadowOffset: {
       width: 0,
-      height: 4
+      height: 1
     },
-    shadowOpacity: 0.3,
-    shadowRadius: 4.65,
-    elevation: 8
+    shadowOpacity: 0.1,
+    shadowRadius: 0.65,
+    elevation: 5
   }
 };
 

@@ -30,14 +30,15 @@ const RenderCard = ({foodName, ingredients, description, image, price, navigatio
               price
             }
             )}}>
-          <Card cardStyles={tailwind(`
+          <Card cardStyles={{...tailwind(`
           mt-4 
           flex-1
           flex-row
           justify-between
           items-center
+          mx-1
           p-4
-          `)}>
+          `)}}>
           
           {/*Heading & Description*/}
           <View style={
@@ -253,7 +254,7 @@ const renderMenuBody = ({item}) => {
         px-1
         py-6
         absolute
-        bottom-6
+        bottom-1
         w-full
       `),
       
@@ -277,10 +278,17 @@ const renderMenuBody = ({item}) => {
         <Image source={icons.person} style={styles.image}/>
       </TouchableOpacity>
       <TouchableOpacity>
-        <Image source={icons.love} style={styles.image}/>
+        <Image source={icons.love} style={styles.image}
+            onPress={() => { navigation.navigate('Favourites')}}
+        />
       </TouchableOpacity>
       <TouchableOpacity>
-        <Image source={icons.cart} style={styles.image}/>
+        <Image source={icons.cart} style={styles.image}
+           onPress={() => { navigation.navigate('Cart', { 
+           foodName: "",
+           cost : 0,
+           quantity : 0}) }}
+        />
       </TouchableOpacity>
       </View>
     )
@@ -297,13 +305,14 @@ const renderMenuBody = ({item}) => {
         <Image source={icons.back} style={styles.icon} />
       </TouchableOpacity>
 
-        {/* Cart */}
+        {/* Cart  */}
       <TouchableOpacity style={styles.cart} onPress={() => { navigation.navigate('Cart', { 
            foodName: "",
            cost : 0,
            quantity : 0}) }}>
         <Image source={icons.cart} style={styles.icon} />
       </TouchableOpacity>
+     
 
 
     <View style={styles.menuContainer}>
@@ -316,7 +325,7 @@ const renderMenuBody = ({item}) => {
       {/*Cards */}
       <FlatList
         showsVerticalScrollIndicator={false}
-        style={tailwind('mt-2 mb-4')}
+        style={tailwind('mt-2 mb-4 ')}
         data={menuData}
         keyExtractor={item => `${item.id}`}
         renderItem={renderMenuBody}
@@ -372,7 +381,7 @@ const styles = StyleSheet.create({
   menuContainer:{
     ...tailwind(`w-full px-6 rounded-t-3xl bg-gray-100 absolute`),
       top:"20%",
-      height:"65%"
+      height:"70%"
       },
        
       heading:{...tailwind(`
