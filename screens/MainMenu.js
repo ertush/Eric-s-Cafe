@@ -13,7 +13,8 @@ import {
 import Constants from 'expo-constants'
 import {Card} from '../components'
 import { StatusBar } from 'expo-status-bar';
-import { images, icons, COLORS, SIZES, FONTS } from '../constants'
+import { images, icons, COLORS, SIZES } from '../constants'
+
 
 
 const RenderCard = ({foodName, ingredients, description, image, price, navigation}) => {
@@ -39,44 +40,44 @@ const RenderCard = ({foodName, ingredients, description, image, price, navigatio
           `)}>
           
           {/*Heading & Description*/}
-          <View style={[
+          <View style={
             tailwind(`
             justify-between
             items-center
-            `),
-            {}
-          ]
+            `)
           }>
           <View >
             <Text 
-            style={[tailwind(`
-            font-bold
+            style={{
+              ...tailwind(`
             text-left
-            `), {
-              ...FONTS.body3,
+            text-base
+            `),
+            fontWeight: "700",
               color: COLORS.deepBlue
-            }]}>{foodName}</Text>
+            }}>{foodName}</Text>
             <Text
-            style={[tailwind(`
+            style={{
+              ...tailwind(`
             font-normal
             text-left
-     
-            `), {
-              ...FONTS.body4,
+            text-sm
+            `), 
+              
               width:SIZES.width * 0.48,
               color: COLORS.darkGray
-            }]}>{ingredients}</Text>
+            }}>{ingredients}</Text>
           </View>
 
-          <View style={tailwind(`w-full`)}><Text style={[
-            tailwind(`
+          <View style={tailwind(`w-full`)}><Text style={{
+            ...tailwind(`
           text-left
           mt-4
           font-semibold
-          `), {
-            ...FONTS.body2,
+          text-xl
+          `), 
             color: COLORS.deepBlue
-          }]}>
+          }}>
           ${price}
           </Text>
           </View>
@@ -95,6 +96,8 @@ const RenderCard = ({foodName, ingredients, description, image, price, navigatio
     }
 
 const MainMenu = ({navigation}) => {
+
+  const [menuBtnFocus, setMenuBtnFocus] = React.useState(true)
 
   const menuData = [
     { id:1,
@@ -150,30 +153,46 @@ const MainMenu = ({navigation}) => {
 
   function renderMenuHeader () {
     const styles = StyleSheet.create({
-       container:[tailwind(`py-6 justify-center items-center `), {}],
-       headerWrapper:[tailwind(`
+       container:tailwind(`py-6 justify-center items-center `),
+
+       headerWrapper:tailwind(`
        flex-row
        justify-between
        items-center
        w-full
-       `), {}],
-       heading:[tailwind(`text-left font-bold`), {...FONTS.body1, color:COLORS.deepBlue}],
-       ratingsWrapper:[tailwind(`flex-row justify-between items-center`), {}],
-       star:[tailwind(`w-4 h-4`), {tintColor: COLORS.lightYellow}],
-       rating:[tailwind(`font-normal ml-2`), {...FONTS.body4, color:COLORS.darkGray}],
-       subtitleWrapper:[tailwind(`
+       `), 
+
+       heading:{
+         ...tailwind(`text-left text-3xl`),
+         fontWeight: "700", 
+         color:COLORS.deepBlue},
+
+       ratingsWrapper:tailwind(`flex-row justify-between items-center`), 
+
+       star:{...tailwind(`w-4 h-4`), tintColor: COLORS.lightYellow},
+
+       rating:{...tailwind(`font-normal ml-2 text-sm`),  color:COLORS.darkGray},
+
+       subtitleWrapper:tailwind(`
         flex-row
        justify-between
        items-center
        pt-4
        w-full
-       `), {}],
-       timeWrapper:[tailwind(`flex-row justify-between items-center`), {}],
-       clock:[tailwind(`w-7 h-7`), { tintColor: COLORS.primary}],
-       time:[tailwind(`text-right font-normal ml-1`), {...FONTS.body4, color:COLORS.darkGray}],
-       priceWrapper:[tailwind(`flex-row justify-between items-center`), {}],
-       deliveryText:[tailwind(`text-right font-normal mr-2`), {...FONTS.body4, color:COLORS.darkGray}],
-       price:[tailwind(`font-bold text-right`), {color:COLORS.deepBlue}],
+       `), 
+
+       timeWrapper:tailwind(`flex-row justify-between items-center`),
+
+       clock:{...tailwind(`w-7 h-7`), tintColor: COLORS.primary},
+
+       time:{...tailwind(`text-right font-normal ml-1 text-sm`), color:COLORS.darkGray},
+
+       priceWrapper:tailwind(`flex-row justify-between items-center`),
+
+       deliveryText:{...tailwind(`text-right font-normal mr-2 text-sm`),  color:COLORS.darkGray},
+
+       price:{...tailwind(`text-right`), fontWeight: "700", color:COLORS.deepBlue},
+
        verticalDivider:tailwind(`h-1 w-full mt-6  rounded-full bg-gray-200`)
 
     })
@@ -224,7 +243,7 @@ const renderMenuBody = ({item}) => {
 
   function renderMenuFooter (navigation) {
     const styles = StyleSheet.create({
-      container:[tailwind(`
+      container:tailwind(`
         flex-row
         mt-4
         justify-evenly
@@ -233,21 +252,26 @@ const renderMenuBody = ({item}) => {
         rounded-full
         px-1
         py-6
-      `),{
-      }],
-      image:[tailwind(`
+        absolute
+        bottom-6
+        w-full
+      `),
+      
+      image:{...tailwind(`
       w-6
       h-6
-      `), {
+      `), 
         tintColor: COLORS.darkGray
-      }]
+      }
 
     })
 
     return (
       <View style={styles.container}>
-      <TouchableOpacity>
-        <Image source={icons.home} style={[tailwind('w-7 h-7'), {tintColor: COLORS.secondary }]}/>
+      <TouchableOpacity onPress={({focused}) => {
+          focused ? setMenuBtnFocus(true) : setMenuBtnFocus(false)
+      }}>
+        <Image source={icons.home} style={{...tailwind('w-7 h-7'), tintColor: menuBtnFocus ? COLORS.secondary : COLORS.darkGray }}/>
       </TouchableOpacity>
       <TouchableOpacity>
         <Image source={icons.person} style={styles.image}/>
@@ -265,7 +289,7 @@ const renderMenuBody = ({item}) => {
 
   return (
 
-    <View style={[tailwind('flex-1'), styles.backImagWrapper]}>
+    <View style={{...tailwind('flex-1'), ...styles.backImagWrapper}}>
       {/* Image background */}
       <ImageBackground source={images.vegie} resizeMode="cover" style={styles.backImage} />
       {/* Back */}
@@ -294,17 +318,17 @@ const renderMenuBody = ({item}) => {
         showsVerticalScrollIndicator={false}
         style={tailwind('mt-2 mb-4')}
         data={menuData}
-        keyExtractor={item => item.id}
+        keyExtractor={item => `${item.id}`}
         renderItem={renderMenuBody}
       />
 
       </View>
 
-      {/* Footer 
+      {/* Footer */}
 
           {renderMenuFooter()}
 
-      */}
+  
 
     <StatusBar style="light"/>
     </View>
@@ -313,11 +337,11 @@ const renderMenuBody = ({item}) => {
 }
 
 const styles = StyleSheet.create({
-  backImagWrapper: {
-    backgroundColor: COLORS.secondary
-  },
-  backImage: tailwind(`w-full h-1/2`),
-  back: [tailwind(`
+  backImagWrapper:tailwind('bg-gray-100'),
+
+  backImage: {...tailwind(`w-full h-1/2`),  backgroundColor: COLORS.secondary },
+
+  back: {...tailwind(`
       absolute
       bg-white
       p-2
@@ -325,9 +349,10 @@ const styles = StyleSheet.create({
       justify-center
       items-center
       rounded-full
-    `), { top: Constants.statusBarHeight * 2, left: SIZES.padding }],
+    `),  top: Constants.statusBarHeight * 2, left: SIZES.padding },
 
-  cart: [tailwind(`
+
+  cart: {...tailwind(`
       absolute
       bg-white
       p-2
@@ -335,28 +360,27 @@ const styles = StyleSheet.create({
       justify-center
       items-center
       rounded-full
-    `), { top: Constants.statusBarHeight * 2, right: SIZES.padding }],
+    `),  top: Constants.statusBarHeight * 2, right: SIZES.padding },
 
-    icon: [tailwind(`
+    icon: {...tailwind(`
       w-5
       h-5
-      `), {
+      `), 
       tintColor: COLORS.secondary
-    }],
+    },
 
-  menuContainer:[
-    tailwind(`w-full px-6 rounded-t-3xl bg-gray-100 absolute`),
-    { 
+  menuContainer:{
+    ...tailwind(`w-full px-6 rounded-t-3xl bg-gray-100 absolute`),
       top:"20%",
-      height:"80%"
-      }],
+      height:"65%"
+      },
        
-      heading:[tailwind(`
-      font-bold
-      `), {
-        ...FONTS.body2,
+      heading:{...tailwind(`
+      text-xl
+      `), 
+        fontWeight: "700",
         color: COLORS.deepBlue
-      }],
+      },
 })
 
 export default MainMenu

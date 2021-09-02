@@ -12,7 +12,7 @@ import {
   from 'react-native'
 import Constants from 'expo-constants'
 import { StatusBar } from 'expo-status-bar';
-import { images, icons, COLORS, SIZES, FONTS } from '../constants'
+import { images, icons, COLORS, SIZES } from '../constants'
 import { CartCard } from '../components'
 
 import { useDispatch, useSelector } from 'react-redux'
@@ -117,18 +117,18 @@ const Cart = ({ navigation, route }) => {
       )
       )
     ) : (
-        <Text style={[
-          tailwind(`
+        <Text style={{
+          ...tailwind(`
         font-semibold
         text-center
+        text-xl
         `),
-          {
-            color: COLORS.deepBlue,
-            ...FONTS.body2,
-            marginTop: SIZES.height * 0.3
+          
+          color: COLORS.deepBlue,
+          marginTop: SIZES.height * 0.3
 
           }
-        ]}>Cart Empty !</Text>
+        }>Cart Empty !</Text>
       )
 
 
@@ -167,23 +167,25 @@ const Cart = ({ navigation, route }) => {
 }
 
 const styles = StyleSheet.create({
-  container: [
-    tailwind(`
+  container: {
+    ...tailwind(`
     flex-1
     bg-gray-100
     mx-6
     `),
-    {
       marginTop: Constants.statusBarHeight * 2
-    }],
-  header: [tailwind(`
+    },
+
+  header: {
+    ...tailwind(`
     flex-row
     justify-between
     items-center
     pl-2
-    `), {
-    width: "72%"
-  }],
+    `), 
+    width: "68%"
+  },
+
   backBtn: tailwind(`
       flex-row 
       justify-center 
@@ -192,47 +194,54 @@ const styles = StyleSheet.create({
       bg-white 
       rounded-full
     `),
-  chevron: [tailwind(`
+
+  chevron: {
+    ...tailwind(`
     w-5
     h-5
-    `), {
-    tintColor: COLORS.deepBlue
-  }],
+    `), 
+    tintColor: COLORS.secondary
+  },
 
-  title: [tailwind(`
-    font-bold
-    `), {
-    ...FONTS.body1,
+  title: {
+    ...tailwind(`
+    text-3xl
+    `), 
+    fontWeight: "700",
     color: COLORS.deepBlue
-  }],
+  },
 
   cardSection: tailwind(`
       flex-1
     `),
+
   btnWrapper: tailwind(`flex-row justify-center items-center`),
-  orderBtn: [tailwind(`
+
+  orderBtn: {
+    ...tailwind(`
     rounded-full
     flex-row
     justify-evenly
     items-center
     p-3
     my-2
-    `), {
+    `), 
     backgroundColor: COLORS.secondary,
     width: "62%",
-  }],
-  orderImage: [tailwind(`w-12 h-12`),
-  {
+  },
+  orderImage: {
+    ...tailwind(`w-12 h-12`),
+
     tintColor: "#fff"
-  }
-  ],
-  orderText: [tailwind(`
-    font-bold
+  },
+
+  orderText: {...tailwind(`
     text-gray-100
+    text-xl
     `),
-  {
-    ...FONTS.body2,
-  }]
+    fontWeight: "700",
+  }
+
 })
 
 export default Cart

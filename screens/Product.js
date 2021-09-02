@@ -10,11 +10,7 @@ import {
   ImageBackground,
 }
 from 'react-native'
-import Constants from 'expo-constants'
-import {images, icons, COLORS, SIZES, FONTS } from '../constants'
-import { useDispatch, useSelector } from 'react-redux'
-import { addDeleteCart } from '../store/cart'
-
+import {images, icons, COLORS, SIZES } from '../constants'
 
 const Product = ({navigation, route}) => {
 
@@ -46,22 +42,21 @@ const baseCost = price
   let [quantity, setQuantity] = React.useState(1)
   let [cost, setCost] = React.useState(baseCost)
 
-    const dispatch = useDispatch()
-    const { cart } = useSelector(state => state.cart)
+   
 
 
 
   function renderHeader(){
     return(
-      <View style={[tailwind('flex flex-row justify-between items-center absolute pt-8 h-10 w-full px-6'), {top:SIZES.radius}]}>
+      <View style={{...tailwind('flex flex-row justify-between items-center absolute pt-8 h-10 w-full px-6'), top:SIZES.radius}}>
       <TouchableOpacity onPress={() => {navigation.goBack()}} style={tailwind('flex-row items-center p-2 bg-white rounded-full')}>
-        <Image source={icons.back} style={[tailwind('w-5 h-5 text-xl'), {tintColor:COLORS.secondary}]}/>
+        <Image source={icons.back} resizeMode="contain" style={{...tailwind('w-5 h-5'), tintColor:COLORS.secondary}}/>
       </TouchableOpacity>
 
       <TouchableOpacity 
       onPress={() => {navigation.navigate('Favourites')}}
       style={tailwind('flex-row items-center p-3 bg-white rounded-full')}>
-        <Image source={icons.love}  style={[tailwind('w-4 h-4'), {tintColor:COLORS.secondary}]}/>
+        <Image source={icons.love}  style={{...tailwind('w-4 h-4'), tintColor:COLORS.secondary}}/>
       </TouchableOpacity>
 
       
@@ -75,14 +70,14 @@ const baseCost = price
       return(
          <View style={tailwind('flex-row justify-start items-end')}>
         <View style={tailwind('w-8 h-8')}>
-          <View style={[tailwind(' h-9 rounded-full flex-1'),{ backgroundColor:COLORS.secondary}]}>
+          <View style={{...tailwind(' h-9 rounded-full flex-1'), backgroundColor:COLORS.secondary}}>
                  <View style={tailwind('w-4 h-4 bg-gray-100 rounded-full absolute -top-2')}>
                   </View>
                   <View style={tailwind('w-4 h-3 bg-yellow-300 rounded-full absolute left-1/4 top-5')}>
                   </View>
           </View>
         </View>
-        <Text style={[tailwind('text-gray-400 font-bold'), {...FONTS.body3, paddingLeft: SIZES.radius}]}> 78 Calories</Text>
+        <Text style={{...tailwind('text-gray-400 font-bold text-base'), paddingLeft: SIZES.radius}}> 78 Calories</Text>
         </View>
       )
     }
@@ -90,14 +85,14 @@ const baseCost = price
     return (
       <View style={tailwind('flex-1 ')}>
           {/* Title */}
-          <View style={[tailwind('flex-row justify-between items-center w-full'), {paddingHorizontal:SIZES.padding}]}>
-           <Text style={[tailwind('font-bold text-green-700'), {...FONTS.body2}]}>{foodName}</Text>
-           <Text style={[tailwind('font-normal'), {...FONTS.body2}]}>${baseCost}</Text>
+          <View style={{...tailwind('flex-row justify-between items-center w-full'), paddingHorizontal:SIZES.padding}}>
+           <Text style={tailwind('font-bold text-green-700 text-xl')}>{foodName}</Text>
+           <Text style={tailwind('font-normal text-xl')}>${baseCost}</Text>
           </View>
           {/* Description */}
-          <Text style={[tailwind(' text-gray-400 text-left font-bold pt-4'), {...FONTS.body5, paddingHorizontal:SIZES.padding}]}>{ingredients}</Text>
+          <Text style={{...tailwind(' text-gray-400 text-left text-xs font-bold pt-4'), paddingHorizontal:SIZES.padding}}>{ingredients}</Text>
 
-          <View style={[tailwind('pt-4'), {paddingLeft:SIZES.padding}]}>
+          <View style={{...tailwind('pt-4'), paddingLeft:SIZES.padding}}>
           {renderFlameIcon()}
           </View>
 
@@ -111,6 +106,7 @@ const baseCost = price
       _toppings.map(
         ({topping, state, setter}, index) => (
           <TouchableOpacity 
+          key={index}
           onPress={() => {setter(!state)}}
           style={tailwind(
             `
@@ -124,19 +120,17 @@ const baseCost = price
             `
           )}>
           <Text style={
-            [
-              tailwind(`
-          font-bold    
+            {
+              ...tailwind(`
+          text-xs  
               `),
-              {
-                ...FONTS.body5,
-      color:(state ? 
-      COLORS.secondary :
-      COLORS.darkGray
-      ),
+            fontWeight: "700",
+            color:(state ? 
+            COLORS.secondary :
+            COLORS.darkGray
+            ),
 marginHorizontal:SIZES.radius
               }
-            ]
           }>{topping}</Text>
           </TouchableOpacity>
         )
@@ -145,20 +139,20 @@ marginHorizontal:SIZES.radius
   }
 
  return (
-   <View style={[styles.container, {}]}>
+   <View style={{...styles.container}}>
 
    {/* Header */}
       <View style={{backgroundColor: COLORS.primary, height:"40%"}}>    
-        <ImageBackground source={images.vegie} style={[tailwind('w-full h-full'), {tintColor:COLORS.primary}]} resizeMode="cover"/>
+        <ImageBackground source={images.vegie} style={{...tailwind('w-full h-full'), tintColor:COLORS.primary}} resizeMode="cover"/>
         {/* Title */}
-          <View style={[tailwind('text-center items-center absolute w-full'), {top:"26%"}]}>
-            <Text style={[tailwind('text-white font-bold capitalize'), {...FONTS.body1}]}>{foodName}</Text>
-            <Text style={[tailwind('text-gray-200 font-bold text-center px-6'), {...FONTS.body3}]}>{description}</Text>
-            <Text style={[tailwind('text-gray-200 font-bold text-center'), {...FONTS.body3}]}>{subtitle}</Text>
+          <View style={{...tailwind('text-center items-center absolute w-full'), top:"26%"}}>
+            <Text style={tailwind('text-white font-bold capitalize text-3xl')}>{foodName}</Text>
+            <Text style={tailwind('text-gray-200 font-bold text-center text-base px-6')}>{description}</Text>
+            <Text style={tailwind('text-gray-200 font-bold text-center text-base')}>{subtitle}</Text>
           </View>
 
         {renderHeader()}
-        <Image source={image} style={[tailwind('w-44 h-44 absolute'), {left:"26%", right:"26%", top:"70%"}]} resizeMode="cover"/>
+        <Image source={image} style={{...tailwind('w-44 h-44 absolute'), left:"26%", right:"26%", top:"70%"}} resizeMode="cover"/>
       </View>
 
     {/* Dish & Description */}
@@ -166,8 +160,8 @@ marginHorizontal:SIZES.radius
     {renderDish()}
     
     {/* Quantity */}
-      <View style={[tailwind('justify-center items-start  flex-1'), {paddingHorizontal:SIZES.padding}]}>
-      <Text style={[tailwind('font-bold text-green-700 pt-6'), { ...FONTS.body2 }]}>Quantity</Text>
+      <View style={{...tailwind('justify-center items-start  flex-1'), paddingHorizontal:SIZES.padding}}>
+      <Text style={tailwind('font-bold text-green-700 pt-6 text-xl')}>Quantity</Text>
       <View style={tailwind('flex-row justify-start items-center pt-4')}>
          <TouchableOpacity
          onPress={() => {setQuantity(() => {
@@ -186,7 +180,7 @@ marginHorizontal:SIZES.radius
          justify-center 
          items-center 
         `)}>
-         <Image source={icons.plus} style={[tailwind('w-8 h-8'), {tintColor:COLORS.primary}]} />
+         <Image source={icons.plus} style={{...tailwind('w-8 h-8'), tintColor:COLORS.primary}} />
          </TouchableOpacity>
 
          <Text style={tailwind('ml-4 text-xl font-bold')}>{quantity}</Text>
@@ -198,7 +192,7 @@ marginHorizontal:SIZES.radius
            setCost((baseCost *  quantity).toPrecision(3)); 
            return quantity;})
            }} 
-         style={[
+         style={{...
            tailwind(
            `
          rounded-full 
@@ -212,20 +206,19 @@ marginHorizontal:SIZES.radius
          items-center 
            `
          ),
-         {
            shadowColor:"#fefefe",
            shadowRadius:SIZES.radius,
            shadowOpacity: 1,
            shadowOffset: 2
          }
-         ]}>
-         <Image source={icons.minus} style={[tailwind('w-8 h-8'), {tintColor:COLORS.primary}]} />
+         }>
+         <Image source={icons.minus} style={{...tailwind('w-8 h-8'), tintColor:COLORS.primary}} />
          </TouchableOpacity>
       </View>
 
       {/* Filter Tags */}
 
-        <Text style={[tailwind('font-bold text-green-700 pt-6'), { ...FONTS.body2 }]}>Add Extra Toppings</Text>
+        <Text style={tailwind('font-bold text-green-700 pt-6 text-xl')}>Add Extra Toppings</Text>
 
     <ScrollView
     horizontal
@@ -266,26 +259,20 @@ marginHorizontal:SIZES.radius
           items-start
           `)
         }>
-          <Text style={
-            [
+          <Text style={   
             tailwind(`
               font-bold
-            `),
-            {
-              ...FONTS.body3
-            }
-            ]
+              text-base
+            `)
+           
           }>Total price</Text>
 
           <Text style={
-            [
+            
             tailwind(`
               font-bold
-            `),
-            {
-              ...FONTS.body2
-            }
-            ]
+              text-xl
+            `)
           }>$ {cost}</Text>
         </View>
           
@@ -298,7 +285,7 @@ marginHorizontal:SIZES.radius
            quantity
         })
         }}
-        style={[
+        style={{...
           tailwind(`
            flex-row
            justify-start
@@ -307,26 +294,19 @@ marginHorizontal:SIZES.radius
            px-4
            py-3
           `),
-          {
              backgroundColor:COLORS.secondary
           }
-        ]
         }
         >
         <Text style={
-          [
           tailwind(`
             font-bold
             text-white
-          `),
-          {
-            ...FONTS.body3,
-      
-          }
-          ]
+            text-base
+          `)
         }>Add to cart</Text>
 
-        <Image source={icons.cart} style={[tailwind('w-7 h-7 ml-2'), {tintColor: '#fff'}]} />
+        <Image source={icons.cart} style={{...tailwind('w-7 h-7 ml-2'), tintColor: '#fff'}} />
         </TouchableOpacity>
 
         </View>

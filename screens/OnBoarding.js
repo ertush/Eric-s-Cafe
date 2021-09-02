@@ -10,7 +10,7 @@ import {
 }
 from 'react-native'
 import Constants from 'expo-constants'
-import {images, icons, COLORS, SIZES, FONTS } from '../constants'
+import {images, COLORS, SIZES } from '../constants'
 
 const OnBoarding  = ({navigation}) => {
 
@@ -54,7 +54,7 @@ const OnBoarding  = ({navigation}) => {
 
         {/* Header */}
         <View style={styles.header}>
-        <TouchableOpacity onPress={() => {navigation.navigate("Product")}}>
+        <TouchableOpacity onPress={() => {navigation.navigate("MainMenu")}}>
         <Text style={styles.skipBtn}>Skip</Text></TouchableOpacity>
         </View>
         
@@ -73,7 +73,7 @@ const OnBoarding  = ({navigation}) => {
 
           {/* next */}
           <TouchableOpacity 
-          onPress={() => {navigation.navigate("Product")}}
+          onPress={() => {navigation.navigate("MainMenu")}}
           style={styles.nextBtn}><Text style={styles.nextText}>next</Text></TouchableOpacity>
         </View>
 
@@ -85,40 +85,42 @@ const OnBoarding  = ({navigation}) => {
 }
 
 const styles = StyleSheet.create({
-  container: [tailwind(` 
-    flex-1 
-   `),
-   {
+  container: {
+     flex:1,
      backgroundColor: COLORS.primary,
-    paddingTop: Constants.statusBarHeight
+     paddingTop: Constants.statusBarHeight
    }
-   ],
-   backImage: [tailwind('w-full h-full'), {tintColor:COLORS.darkGray}],
+   ,
+   backImage: {
+     width: "100%",
+     height:"100%",
+    tintColor:COLORS.darkGray,
+  },
 
-   content:[
-     tailwind(`absolute flex-1 w-full`),
-     {
-      top:"20%"
+   content:{
+      position: "absolute",
+      flex:1,
+      width:"100%",
+      top:"20%",
      }
-   ],
+   ,
    
-   header: tailwind(`
-   flex-row
-   justify-end
-   px-6
-   items-center
-   `),
+   header: {
+    flexDirection:"row",
+    justifyContent:"flex-end",
+    paddingHorizontal:SIZES.padding,
+    alignItems:"center"
+   },
 
-   skipBtn: [tailwind(`
-    font-bold
+   skipBtn:{...tailwind(`
     text-white
     mb-6
-   `), {
-     ...FONTS.body3
+    text-base
+   `),
+   fontWeight: "700",
+  },
 
-   }],
-
-   card: [tailwind(`
+   card:{...tailwind(`
     justify-evenly
     items-start
     p-4
@@ -127,69 +129,56 @@ const styles = StyleSheet.create({
     rounded-3xl
     flex-1
    `),
-   {
-     backgroundColor: COLORS.transparentLightGray1,
-     borderColor:COLORS.lightGreen
-   }],
+    backgroundColor: COLORS.transparentLightGray1,
+    borderColor:COLORS.lightGreen
+   },
 
-cardHeading:[
-  tailwind(`
+cardHeading:{
+  ...tailwind(`
   text-white
   text-left
-  font-bold
   mb-4
+  text-3xl
   `),
-  {
-    ...FONTS.body1,
+  
+    fontWeight: "700",
     width:"80%"
-  }
-],
+  },
 
-description:[
-  tailwind(`
+
+description:tailwind(`
   text-left
   text-white
   font-semibold
+  text-xl
   `),
-  {
-    ...FONTS.body2,
 
-  }
-],
-
-cardImage:[tailwind(`
+cardImage:{
+ ...tailwind(`
 flex-1
 h-64
 `),
-{width:"100%"}
-],
+width:"100%"},
 
-nextBtn:[
-  tailwind(`
+nextBtn:{
+  ...tailwind(`
   absolute
   py-4
   px-6
   rounded-full
   `)
 ,
-{
   top:"100%",
   left:"40%",
   backgroundColor: COLORS.secondary
-  }
-],
+},
 
-nextText:[
-  tailwind(`
-  font-bold
+nextText:{...tailwind(`
   capitalize
+  text-xl
   `),
-  {
-    ...FONTS.body2
+  fontWeight: "700",
   }
-]
-
-    
 })
 
 export default OnBoarding

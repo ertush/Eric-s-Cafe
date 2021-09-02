@@ -9,7 +9,7 @@ import {
 
 import tailwind from 'tailwind-rn'
 
-import { icons, FONTS, COLORS } from '../constants'
+import { icons, FONTS, COLORS, SIZES } from '../constants'
 import Card from './Card'
 
 const CartCard = ({ id, image, title, price, amount, deleteCb, navigation }) => {
@@ -74,11 +74,15 @@ const CartCard = ({ id, image, title, price, amount, deleteCb, navigation }) => 
 }
 
 const styles = StyleSheet.create({
-  cardWrapper: [tailwind(`
+  cardWrapper: {
+    ...tailwind(`
    flex-row
    justify-between
    items-center
-  `), { ...COLORS.shadow }],
+  `),
+    ...COLORS.shadow,
+  },
+
   container: tailwind(`
   flex-row
   justify-between
@@ -90,52 +94,64 @@ const styles = StyleSheet.create({
   mt-6
   mb-4
   `),
-  image: [tailwind(`
+
+  image: tailwind(`
   w-24
   h-24
-  `), {}],
-  detailsWrapper: [tailwind(`
+  `),
+
+  detailsWrapper: tailwind(`
   justify-between
   h-24
   py-5
   ml-2
   items-start
-  `), {}],
-  title: [tailwind(`
-  font-bold
-  `), {
-    ...FONTS.body3,
+  `),
+
+  title: {
+    ...tailwind(`
+ 
+  text-base
+  `),
     color: COLORS.deepBlue,
-    width: "70%"
-  }],
-  price: [tailwind(`
-  font-bold
-  
-  `), {
-    ...FONTS.body3,
-    color: COLORS.deepBlue
-  }],
-  quantityWrapper: [tailwind(`
+    fontWeight: "700",
+    width: "70%",
+  },
+
+  price: {
+    ...tailwind(`
+  text-base
+  `),
+    fontWeight: "700",
+    color: COLORS.deepBlue,
+  },
+
+  quantityWrapper: tailwind(`
   flex-row
   justify-end
   items-center
-  `), {}],
-  quantity: [tailwind(`
+  `),
+
+  quantity: {
+    ...tailwind(`
   mr-2
-  font-bold
   ml-2
-  `), {
-    ...FONTS.body3,
+  text-base
+  `),
     color: COLORS.deepBlue,
-    marginTop: 49
-  }],
-  btnWrapper: [tailwind(`
+    fontWeight: "700",
+    marginTop: 49,
+  },
+
+  btnWrapper: tailwind(`
    justify-between
    h-24
    py-2
    items-center
-  `), {}],
-  addBtn: [tailwind(`
+  `),
+
+  addBtn: {
+    ...tailwind(`
   p-2
   w-7
   h-7
@@ -143,10 +159,11 @@ const styles = StyleSheet.create({
   flex-row
   justify-center
   items-center
-  `), {
-    backgroundColor: COLORS.primary
-  }],
-  minusBtn: [tailwind(`
+  `),
+    backgroundColor: COLORS.primary,
+  },
+
+  minusBtn: tailwind(`
   p-2
   w-7
   h-7
@@ -155,41 +172,43 @@ const styles = StyleSheet.create({
   flex-row
   justify-center
   items-center
-  `), {}],
-  plus: [tailwind(`
+  `),
+  plus: {
+    ...tailwind(`
   w-5
   h-5
-  `), {
-    tintColor: "#fff"
-  }],
-  minus: [tailwind(`
+  `),
+    tintColor: "#fff",
+  },
+
+  minus: {
+    ...tailwind(`
   w-6
   h-6
-  `), {
-    tintColor: COLORS.primary
-  }],
+  `),
+    tintColor: COLORS.primary,
+  },
 
-  deleteButton: [tailwind(`
+  deleteButton: {
+    ...tailwind(`
    flex-row
    justify-center
    items-center
    p-2
    ml-4
    rounded-full
-  `), {
-    backgroundColor: COLORS.secondary
-  }],
+  `),
+    backgroundColor: COLORS.secondary,
+  },
 
-  recycleBin: [
-    tailwind(`
+  recycleBin: {
+    ...tailwind(`
     w-5
     h-5
     `),
-    {
-      tintColor: "#fff"
-    }
-  ]
 
-})
+    tintColor: "#fff",
+  },
+});
 
 export default CartCard

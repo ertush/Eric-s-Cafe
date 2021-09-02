@@ -19,7 +19,7 @@ export const COLORS = {
   //shadow
   shadow: {
     shadowColor: "#000",
-    shadowOffSet: {
+    shadowOffset: {
       width: 0,
       height: 4
     },
@@ -31,21 +31,22 @@ export const COLORS = {
 
 export const SIZES = {
     // global sizes
-    base: 8,
+    base: 8, //t-2
     font: 14,
-    radius: 12,
-    padding: 24,
+    radius: 12, //t-3
+    padding: 24, //t-6
 
     // font sizes
     largeTitle: 50,
-    h1: 30,
-    h2: 22,
-    h3: 16,
-    h4: 14,
-    body1: 30,
-    body2: 20,
-    body3: 16,
-    body4: 14,
+    h1: 30, //text-3xl
+    h2: 22, 
+    h3: 16, //text-base
+    h4: 14, 
+    body1: 30, //text-3xl 
+    body2: 20, //text-xl
+    body3: 16, //text-base
+    body4: 14, //text-sm
+    body5: 12, //text-xs
 
     // app dimensions
     width,
