@@ -11,39 +11,90 @@ import tailwind from 'tailwind-rn'
 
 import { icons,  COLORS, } from '../constants'
 import Card from './Card'
+import formatPrice from '../utils'
+// import {useDispatch, useSelector} from 'react-redux'
+// import { incDecQuantity } from '../store/quantity'
+// import {incDecPrice} from '../store/price'
 
-const CartCard = ({ id, image, title, price, amount, deleteCb, navigation }) => {
+const CartCard = ({ id, image, title, cost, amount, deleteCb, baseCost }) => {
 
-  let [quantity, setQuantity] = React.useState(amount)
+  // // const [addCostCb, minusCostCb] = costCb
+  const [quantity, setQuantity] = React.useState(amount)
+  const [price, setPrice] = React.useState(cost)
+  const [deleteCardBtn, setDeleteCardBtn] = React.useState(false)
+  // const dispatch = useDispatch()
+  // // const {quantity} = useSelector(state => state.quantity)
+  // const {price} = useSelector(state => state.price)
+
+  // const [baseCost, setBaseCost] = React.useState(cost)
+  // const [cardCost, setCardCost] = React.useState(price)
+  // // const [price, setPrice] = React.useState(baseCost)
   const [deleted, setDeleted] = React.useState(false)
-  const handleAdd = () => { setQuantity(() => { quantity += 1; (quantity < 1 ? quantity = 1 : quantity); return quantity; }) }
-  const handleMinus = () => { setQuantity(() => { quantity -= 1; (quantity < 1 ? quantity = 1 : quantity); return quantity; }) }
+
+  const handleAdd = () => { 
+  
+    let qnt = quantity;
+      qnt += 1; 
+      setPrice(baseCost * qnt)
+      setQuantity(qnt)
+ 
+
+
+      // setCardCost(baseCost * qnt)
+
+      // dispatch(incDecPrice(baseCost * quantity))
+ 
+    // addCostCb(price)
+   
+  }
+
+  const handleMinus = () => { 
+   
+    let qnt = quantity;
+      qnt -= 1; 
+      if(qnt < 1) qnt = 1 
+      setPrice(baseCost * qnt)
+      setQuantity(qnt)
+     
+      // setCardCost(baseCost * qnt)
+
+    // dispatch(incDecPrice(baseCost * quantity))
+    // minusCostCb(price)
+
+  }
 
 
   React.useEffect(() => {
-
+    // return () => {
+    //   setCardCost(0)
+    // }
   }, [deleted])
 
 
   return (
 
-    <View style={styles.cardWrapper} >
+    <TouchableOpacity onLongPress={() => {
+       setDeleteCardBtn(!deleteCardBtn)
+    }} style={styles.cardWrapper} >
       {/* Card */}
       <Card cardStyles={styles.container}>
         {/* Image */}
-        <View style={tailwind('flex-row flex-1')}>
-          <Image source={image} style={styles.image} />
+        <View style={tailwind('flex-row flex-1 justify-center items-center')}>
+          <Image source={image} style={{...styles.image, marginLeft: deleteCardBtn ? "25%" : 0}} />
 
           {/* Title & price */}
           <View style={styles.detailsWrapper}>
-            <Text style={styles.title}>{title}</Text>
-            <Text style={styles.price}>${price}</Text>
+            <Text style={{...styles.title, width: deleteCardBtn ? "70%" : "100%"}}>{title}</Text>
+            <Text style={styles.price}>${formatPrice(price)}</Text>
           </View>
         </View>
 
         {/* Quantity */}
+
+        <View style={tailwind('justify-center items-center')}>
+          <Text style={styles.quantity}>{quantity}</Text>
+        </View>
         <View style={styles.quantityWrapper}>
-          <Text style={styles.quantity}>qty: {quantity}</Text>
           <View style={styles.btnWrapper}>
             <TouchableOpacity
               onPress={handleAdd}
@@ -58,7 +109,9 @@ const CartCard = ({ id, image, title, price, amount, deleteCb, navigation }) => 
       </Card>
 
       {/* Delete Button */}
-      <TouchableOpacity
+      {
+        deleteCardBtn && 
+        <TouchableOpacity
         onPress={
           () => {
             setDeleted(true)
@@ -68,7 +121,10 @@ const CartCard = ({ id, image, title, price, amount, deleteCb, navigation }) => 
         style={styles.deleteButton}>
         <Image source={icons.recycleBin} style={styles.recycleBin} />
       </TouchableOpacity>
-    </View>
+
+      }
+     
+    </TouchableOpacity>
   )
 
 }
@@ -76,19 +132,20 @@ const CartCard = ({ id, image, title, price, amount, deleteCb, navigation }) => 
 const styles = StyleSheet.create({
   cardWrapper: tailwind(`
    flex-row
-   justify-between
+   justify-center
    items-center
   `),
 
   container: {...tailwind(`
   flex-row
   justify-between
+
   py-2
   pr-4
   pl-2
   flex-1
   items-center
-  ml-2
+  mx-2
   mt-6
   mb-4
   `),
@@ -96,15 +153,15 @@ const styles = StyleSheet.create({
 },
 
   image: tailwind(`
-  w-24
-  h-24
+  w-20
+  h-20
+  mr-2
   `),
 
   detailsWrapper: tailwind(`
-  justify-between
+  justify-evenly
   h-24
-  py-5
-  ml-2
+  py-1
   items-start
   `),
 
@@ -115,7 +172,6 @@ const styles = StyleSheet.create({
   `),
     color: COLORS.deepBlue,
     fontWeight: "700",
-    width: "70%",
   },
 
   price: {
@@ -128,7 +184,7 @@ const styles = StyleSheet.create({
 
   quantityWrapper: tailwind(`
   flex-row
-  justify-end
+  justify-center
   items-center
   `),
 
@@ -139,8 +195,7 @@ const styles = StyleSheet.create({
   text-base
   `),
     color: COLORS.deepBlue,
-    fontWeight: "700",
-    marginTop: 49,
+    fontWeight: "700"
   },
 
   btnWrapper: tailwind(`
@@ -158,27 +213,32 @@ const styles = StyleSheet.create({
   rounded-full
   flex-row
   justify-center
+  bg-white
   items-center
   `),
-    backgroundColor: COLORS.primary,
+  borderWidth: 2,
+  borderColor: COLORS.transparentLightGray
   },
 
-  minusBtn: tailwind(`
+  minusBtn:{...tailwind(`
   p-2
   w-7
   h-7
   rounded-full
-  bg-gray-200
+  bg-white
   flex-row
   justify-center
   items-center
   `),
+  borderWidth: 2,
+  borderColor: COLORS.transparentLightGray
+  },
   plus: {
     ...tailwind(`
   w-5
   h-5
   `),
-    tintColor: "#fff",
+    tintColor: COLORS.darkGray,
   },
 
   minus: {
@@ -186,7 +246,7 @@ const styles = StyleSheet.create({
   w-6
   h-6
   `),
-    tintColor: COLORS.primary,
+    tintColor: COLORS.darkGray,
   },
 
   deleteButton: {
@@ -195,8 +255,7 @@ const styles = StyleSheet.create({
    justify-center
    items-center
    p-2
-   ml-4
-   mr-1
+  
    rounded-full
   `),
   ...COLORS.shadow,

@@ -13,7 +13,8 @@ import {
 import Constants from 'expo-constants'
 import {Card} from '../components'
 import { StatusBar } from 'expo-status-bar';
-import { images, icons, COLORS, SIZES } from '../constants'
+import { images, data, icons, COLORS, SIZES } from '../constants'
+import formatPrice from '../utils'
 
 
 
@@ -27,7 +28,7 @@ const RenderCard = ({foodName, ingredients, description, image, price, navigatio
               ingredients, 
               image, 
               description,
-              price
+              cost:price
             }
             )}}>
           <Card cardStyles={{...tailwind(`
@@ -100,54 +101,6 @@ const MainMenu = ({navigation}) => {
 
   const [menuBtnFocus, setMenuBtnFocus] = React.useState(true)
 
-  const menuData = [
-    { id:1,
-      foodName:'Soloi Salad',
-      description: `Enjoy freshly roasted fish and leafy vegies on the side`,
-      ingredients:`Leafy Vegies, Roasted Fish, Red Tomatoe, garlic, olive oil, Served with red wine`,
-      price: 7.90,
-      image:images.food,
-      navigation
-    },
-    {  
-      id:2,
-      foodName:'Pasta Bolongesse',
-      description: `Enjoy Pasta with fried beef red hot sauce`,
-      ingredients:`Chilli, red hot sauce, garlic powder, pasta, Tomatoe sauce, red wine`,
-      price: 2.50,
-      image:images.pasta,
-      navigation
-    },
-     {
-       id:3,
-      foodName:'Pepperoni  Pizza', 
-      description: `Enjoy Freshly backed pizza with pinnaple toppings`,
-      ingredients:`Cheese, Mayonesse, tomatoe sauce, ketchup ,Onion rings, pinnaple chunks,bacon, beef, corn`,
-      price: 5.50,
-      image:images.pizza,
-      navigation
-    },
-      {
-        id:4,
-      foodName:'Chicken Burger',
-      description: `Enjoy a three layered chicken burger with a cold cocacola`,
-      ingredients:`Buns, White oninos, Rasted Chicken meat, fresh vegies, Tomatoe, Cheese, Mayonesse, Tomamtoe sauce `,
-      price: 2.45,
-      image:images.burger,
-       navigation
-    },
-
-     {
-       id:5,
-      foodName:'Black Coffee',
-      description: `Enjoy a hot beverage of finely roasted coffee beans `,
-      ingredients:`Freshly roasted coffebeans, sugar, milk cream, milk, hot water `,
-      price: 3.45,
-      image:images.blackCoffee,
-      navigation
-    },
-    
-  ]
 
   const rating = 4.8
   const price = 5.56
@@ -217,7 +170,7 @@ const MainMenu = ({navigation}) => {
 
               <View style={styles.priceWrapper}>
                 <Text style={styles.deliveryText}>delivery</Text>
-                <Text style={styles.price}>${price}</Text>
+                <Text style={styles.price}>${formatPrice(price)}</Text>
               </View>
             </View>
 
@@ -326,7 +279,7 @@ const renderMenuBody = ({item}) => {
       <FlatList
         showsVerticalScrollIndicator={false}
         style={tailwind('mt-2 mb-4 ')}
-        data={menuData}
+        data={data.menuData(navigation)}
         keyExtractor={item => `${item.id}`}
         renderItem={renderMenuBody}
       />
