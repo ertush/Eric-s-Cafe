@@ -21,7 +21,7 @@ const Product = ({navigation, route}) => {
  
   const subtitle = `Open from 10 am - 11pm Daily`
 
-  const {foodName, image, cost, ingredients, description} = route.params
+  const {foodName, image, cost, ingredients, calories, description} = route.params
   const baseCost = Number(cost)
 
 
@@ -88,7 +88,7 @@ const Product = ({navigation, route}) => {
                   </View>
           </View>
         </View>
-        <Text style={{...tailwind('text-gray-400 font-bold text-base'), paddingLeft: SIZES.radius}}> 78 Calories</Text>
+        <Text style={{...tailwind('text-gray-400 font-bold text-base'), paddingLeft: SIZES.radius}}> {calories} Calories</Text>
         </View>
       )
     }

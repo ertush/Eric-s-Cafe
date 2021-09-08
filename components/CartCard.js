@@ -8,43 +8,32 @@ import {
 } from 'react-native'
 
 import tailwind from 'tailwind-rn'
-
 import { icons,  COLORS, } from '../constants'
 import Card from './Card'
 import formatPrice from '../utils'
-// import {useDispatch, useSelector} from 'react-redux'
-// import { incDecQuantity } from '../store/quantity'
-// import {incDecPrice} from '../store/price'
+import {data} from '../constants'
 
-const CartCard = ({ id, image, title, cost, amount, deleteCb, baseCost }) => {
 
-  // // const [addCostCb, minusCostCb] = costCb
+const CartCard = ({ id, image, title, cost, amount, deleteCb, imageStyle, addToSubTotal, minusFromSubTotal }) => {
+
   const [quantity, setQuantity] = React.useState(amount)
   const [price, setPrice] = React.useState(cost)
   const [deleteCardBtn, setDeleteCardBtn] = React.useState(false)
-  // const dispatch = useDispatch()
-  // // const {quantity} = useSelector(state => state.quantity)
-  // const {price} = useSelector(state => state.price)
+  const [baseCost, setBaseCost] = React.useState(0)
 
-  // const [baseCost, setBaseCost] = React.useState(cost)
-  // const [cardCost, setCardCost] = React.useState(price)
-  // // const [price, setPrice] = React.useState(baseCost)
   const [deleted, setDeleted] = React.useState(false)
+
 
   const handleAdd = () => { 
   
     let qnt = quantity;
       qnt += 1; 
+      console.log({baseCost})
       setPrice(baseCost * qnt)
       setQuantity(qnt)
+      addToSubTotal(baseCost)
  
 
-
-      // setCardCost(baseCost * qnt)
-
-      // dispatch(incDecPrice(baseCost * quantity))
- 
-    // addCostCb(price)
    
   }
 
@@ -55,19 +44,37 @@ const CartCard = ({ id, image, title, cost, amount, deleteCb, baseCost }) => {
       if(qnt < 1) qnt = 1 
       setPrice(baseCost * qnt)
       setQuantity(qnt)
+      minusFromSubTotal(baseCost)
      
-      // setCardCost(baseCost * qnt)
-
-    // dispatch(incDecPrice(baseCost * quantity))
-    // minusCostCb(price)
+     
 
   }
 
 
   React.useEffect(() => {
-    // return () => {
-    //   setCardCost(0)
-    // }
+
+    const _data = data.dummyData(null)  
+    switch(id){
+      case 1:
+        setBaseCost(_data[0].price)
+        break;
+      case 2:
+        setBaseCost(_data[1].price)
+        break;
+      case 3:
+        setBaseCost(_data[2].price)
+        break;
+      case 4:
+        setBaseCost(_data[3].price)
+        break;
+      case 5:
+        setBaseCost(_data[4].price)
+        break;
+      
+    }
+  
+ 
+   
   }, [deleted])
 
 
@@ -79,8 +86,8 @@ const CartCard = ({ id, image, title, cost, amount, deleteCb, baseCost }) => {
       {/* Card */}
       <Card cardStyles={styles.container}>
         {/* Image */}
-        <View style={tailwind('flex-row flex-1 justify-center items-center')}>
-          <Image source={image} style={{...styles.image, marginLeft: deleteCardBtn ? "25%" : 0}} />
+        <View style={{width:"auto", ...tailwind(`flex-row flex-1 ${deleteCardBtn ? 'justify-center' : 'justify-start'} items-center`)}}>
+          <Image source={image} style={{ ...styles.image ,...imageStyle, marginLeft: deleteCardBtn && id !== 1 ? "25%" : 0}} />
 
           {/* Title & price */}
           <View style={styles.detailsWrapper}>
@@ -114,8 +121,11 @@ const CartCard = ({ id, image, title, cost, amount, deleteCb, baseCost }) => {
         <TouchableOpacity
         onPress={
           () => {
+            
             setDeleted(true)
-            deleteCb(id)
+            deleteCb(id, setDeleted) 
+           
+            
           }
         }
         style={styles.deleteButton}>
@@ -134,12 +144,12 @@ const styles = StyleSheet.create({
    flex-row
    justify-center
    items-center
+  
   `),
 
   container: {...tailwind(`
   flex-row
   justify-between
-
   py-2
   pr-4
   pl-2
@@ -149,12 +159,11 @@ const styles = StyleSheet.create({
   mt-6
   mb-4
   `),
-  ...COLORS.shadow
+  ...COLORS.shadow,
+  width:"auto"
 },
 
   image: tailwind(`
-  w-20
-  h-20
   mr-2
   `),
 

@@ -18,7 +18,7 @@ import formatPrice from '../utils'
 
 
 
-const RenderCard = ({foodName, ingredients, description, image, price, navigation}) => {
+const RenderCard = ({foodName, ingredients, description, image, imageStyle, calories, price, navigation}) => {
         return (
          
           <TouchableOpacity onPress={() => {navigation.navigate(
@@ -28,6 +28,7 @@ const RenderCard = ({foodName, ingredients, description, image, price, navigatio
               ingredients, 
               image, 
               description,
+              calories,
               cost:price
             }
             )}}>
@@ -80,7 +81,7 @@ const RenderCard = ({foodName, ingredients, description, image, price, navigatio
           `), 
             color: COLORS.deepBlue
           }}>
-          ${price}
+          ${formatPrice(price)}
           </Text>
           </View>
           
@@ -88,7 +89,7 @@ const RenderCard = ({foodName, ingredients, description, image, price, navigatio
 
           {/*Image */}
 
-          <Image source={image} style={tailwind('w-28 h-28 pr-2')}/>
+          <Image source={image} style={{...tailwind('pr-2'), ...imageStyle}}/>
           
           </Card>
           </TouchableOpacity>
@@ -184,12 +185,14 @@ const MainMenu = ({navigation}) => {
 const renderMenuBody = ({item}) => {
     return (
        <RenderCard 
-       foodName={item.foodName}
+       foodName={item.title}
        ingredients={item.ingredients}
        image={item.image}
        description={item.description}
        price={item.price}
+       calories={item.calories}
        navigation={item.navigation}
+       imageStyle={item.imageStyle}
        />
     )
   }
@@ -279,7 +282,7 @@ const renderMenuBody = ({item}) => {
       <FlatList
         showsVerticalScrollIndicator={false}
         style={tailwind('mt-2 mb-4 ')}
-        data={data.menuData(navigation)}
+        data={data.dummyData(navigation)}
         keyExtractor={item => `${item.id}`}
         renderItem={renderMenuBody}
       />

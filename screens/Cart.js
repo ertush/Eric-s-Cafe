@@ -17,7 +17,7 @@ import { CartCard } from '../components'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { addDeleteCart } from '../store/cart'
-// import { addSubtractToSubTotal } from '../store/subTotal'
+import { addSubtractToSubTotal } from '../store/subTotal'
 import formatPrice from '../utils';
 import { incDecPrice } from '../store/price';
 import { incDecQuantity } from '../store/quantity';
@@ -27,22 +27,21 @@ const Cart = ({ navigation, route}) => {
 
     
   const dispatch = useDispatch()
-  // const {quantity} = useSelector(state => state.quantity)
-  // const {price} = useSelector(state => state.price)
+ 
 
   const { foodName, cost, quantity } = route.params
   const deliveryCost = 5.56;
 
 
-  const [allData, setallData] = React.useState(data.dummyData)
+  const [allData, setallData] = React.useState(data.dummyData(navigation))
   const [baseCost, setBaseCost] = React.useState(0)
 
   const { cart } = useSelector(state => state.cart)
-  // const { subTotal } = useSelector(state => state.subTotal)
+  const { subTotal } = useSelector(state => state.subTotal)
 
  React.useEffect(() => {
     
-    // dispatch(addSubtractToSubTotal(cost))
+    dispatch(addSubtractToSubTotal(cost))
 
     if (foodName !== "") {
       dispatch(addDeleteCart([
@@ -54,11 +53,11 @@ const Cart = ({ navigation, route}) => {
           cartItem['price'] = cost
           cartItem['quantity'] = quantity
 
-          // dispatch(addSubtractToSubTotal(((_cost) => { 
-          //     let subT = subTotal
-          //     subT+=Number(_cost)
-          //     return subT
-          // })(cost)))
+          dispatch(addSubtractToSubTotal(((_cost) => { 
+              let subT = subTotal
+              subT+=Number(_cost)
+              return subT
+          })(cost)))
 
 
           return cartItem
@@ -77,58 +76,61 @@ const Cart = ({ navigation, route}) => {
   }, [foodName])
 
 
-  const handleDelete = (id) => {
+  const handleDelete = (id, setter) => {
+
 
     ToastAndroid.showWithGravityAndOffset('Cart Item Deleted', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 25, 260)
     dispatch(addDeleteCart((() => {
       let currentCartItems = []
 
       cart.map(item => currentCartItems.push(item))
-      const deletedItem = currentCartItems.indexOf(currentCartItems.find(item => item.id === id))
+      const item = currentCartItems.find(item => item.id === id)
+      const deletedItem = currentCartItems.indexOf(item)
+
+      const remCost = subTotal - item.price
+
+      if(currentCartItems.length === 0) remCost = 0
+
+      dispatch(addSubtractToSubTotal(remCost))
+
       currentCartItems.splice(deletedItem, 1)
+
+      setter(false)
 
       return currentCartItems
     })(id)))
 
-    // dispatch(addSubtractToSubTotal(0))
+    
   }
-  /*
+  
   const updatePriceByAdd = (price) => {
-      // dispatch(addSubtractToSubTotal(
-      //   ((p) => {
-      //       let _price = subTotal
-      //       _price += p
-      //       return _price
-      //   })(price)
-      // ))
+      dispatch(addSubtractToSubTotal(
+        ((p) => {
+            let _price = subTotal
+            _price += p
+            return _price
+        })(price)
+      ))
 
-      setSubTotal(((p) => {
-              let _price = subTotal
-              _price += p
-              return _price
-          })(price))
+
     }
 
   const updatePriceByMinus = (price) => {
-    // dispatch(addSubtractToSubTotal(
-    //   ((p) => {
-    //       let _price = subTotal
-    //       _price -= p
-    //       if(_price < 1) _price = 0
-    //       return _price
-    //   })(price)
-    // ))
-    setSubTotal(((p) => {
-      let _price = subTotal
-      _price -= p
-      return _price
-  })(price))
-  }*/
+    dispatch(addSubtractToSubTotal(
+      ((p) => {
+          let _price = subTotal
+          _price -= p
+          if(_price < 1) _price = 0
+          return _price
+      })(price)
+    ))
+
+  }
 
   function renderCartCard() {
     return cart.length >= 1 ? (
 
-      cart.map(({ id, image, title, price, quantity}, index) => (
+      cart.map(({ id, image, title, price, quantity, imageStyle}, index) => (
         <CartCard
           id={id}
           key={index}
@@ -136,8 +138,10 @@ const Cart = ({ navigation, route}) => {
           image={image}
           title={title}
           cost={price}
-          baseCost={baseCost}
           amount={quantity}
+          imageStyle={imageStyle}
+          addToSubTotal={updatePriceByAdd}
+          minusFromSubTotal={updatePriceByMinus}
   
         />
       )
@@ -242,7 +246,7 @@ const Cart = ({ navigation, route}) => {
         </View>
 
         <View style={styles.priceWrapper}>
-         <Text style={styles.priceLabel}>${formatPrice(0.00)}</Text>
+         <Text style={styles.priceLabel}>${formatPrice(subTotal)}</Text>
          <Text style={{...styles.priceLabel, ...tailwind('mt-4')}}>${deliveryCost}</Text>
        </View>
        </View>
@@ -250,7 +254,7 @@ const Cart = ({ navigation, route}) => {
        {/* Total Section */}
        <View style={styles.totalWrapper}>
          <Text style={styles.totalLabel}>Total</Text>
-         <Text style={styles.total}>${formatPrice(0.00 + deliveryCost)}</Text>
+         <Text style={styles.total}>${(subTotal === 0 ? formatPrice(0) : formatPrice(subTotal + deliveryCost))}</Text>
        </View>
     </View>
     )
