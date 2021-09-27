@@ -98,13 +98,15 @@ const RenderCard = ({foodName, ingredients, description, image, imageStyle, calo
         )
     }
 
-const MainMenu = ({navigation}) => {
+const MainMenu = ({navigation, route}) => {
 
 
   const rating = 4.8
   const price = 5.56
 
-  function renderMenuHeader () {
+  const { restaurant } = route.params !== undefined ? route.params : ""
+
+  function renderMenuHeader (title = "Eric's Cafe") {
     const styles = StyleSheet.create({
        container:tailwind(`py-6 justify-center items-center `),
 
@@ -150,11 +152,13 @@ const MainMenu = ({navigation}) => {
 
     })
 
+
+
     return (
       <View style={styles.container}>
           {/* Header */}
           <View style={styles.headerWrapper}>
-            <Text style={styles.heading}>Eric's Cafe</Text>
+            <Text style={styles.heading}>{title}</Text>
             <View style={styles.ratingsWrapper}>
               <Image source={icons.star} style={styles.star}/>
               <Text style={styles.rating}>{rating}</Text>
@@ -210,7 +214,7 @@ const renderMenuBody = ({item}) => {
   
 
     <View style={styles.menuContainer}>
-        {renderMenuHeader()}
+        {renderMenuHeader(restaurant)}
 
         <Text style={styles.heading}>
           Main menu

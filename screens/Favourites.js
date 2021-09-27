@@ -97,7 +97,8 @@ const Favourites = ({ navigation }) => {
    
 
       {/* Card Footer */}
-      <TouchableOpacity style={{...tailwind(`
+      <TouchableOpacity
+       style={{...tailwind(`
       flex-row
       justify-between
       items-center
@@ -112,7 +113,17 @@ const Favourites = ({ navigation }) => {
       z-10
       `),
       ...COLORS.shadow
-      }}>
+      }}
+      
+      onPress={
+        () => {
+
+          navigation.navigate("MainMenu",{ 
+            restaurant: title
+          })
+        }
+      }
+      >
         <Text style={{
           ...tailwind(`
           text-xl
