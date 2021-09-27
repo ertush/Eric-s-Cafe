@@ -11,10 +11,11 @@ import {
 }
 from 'react-native'
 import {images, icons, COLORS, SIZES } from '../constants'
-import formatPrice from '../utils'
+import util from '../utils'
 import { useDispatch, useSelector } from 'react-redux'
 import { incDecQuantity } from '../store/quantity'
 import { incDecPrice } from '../store/price'
+import { HorizontalFilter } from '../components'
 
 const Product = ({navigation, route}) => {
 
@@ -98,7 +99,7 @@ const Product = ({navigation, route}) => {
           {/* Title */}
           <View style={{...tailwind('flex-row justify-between items-center w-full'), paddingHorizontal:SIZES.padding}}>
            <Text style={tailwind('font-bold text-green-700 text-xl')}>{foodName}</Text>
-           <Text style={tailwind('font-normal text-xl')}>${formatPrice(baseCost)}</Text>
+           <Text style={tailwind('font-normal text-xl')}>${util.formatPrice(baseCost)}</Text>
           </View>
           {/* Description */}
           <Text style={{...tailwind(' text-gray-400 text-left text-base font-bold pt-4'), paddingHorizontal:SIZES.padding}}>{ingredients}</Text>
@@ -111,60 +112,38 @@ const Product = ({navigation, route}) => {
     )
   }
 
-  function renderToppingTags(_toppings) {
-
-    return(
-      _toppings.map(
-        ({topping, state, setter}, index) => (
-          <TouchableOpacity 
-          key={index}
-          onPress={() => {setter(!state)}}
-          style={tailwind(
-            `
-            bg-white
-            p-2
-            ${index === 0 ? 'mr-2' : 'mx-2'}
-            rounded-3xl
-            border-2
-            justify-center
-            items-center
-            ${state ? 'border-yellow-500' : 'border-gray-200' }
-            `
-          )}>
-          <Text style={
-            {
-              ...tailwind(`
-          text-xs  
-              `),
-            fontWeight: "700",
-            color:(state ? 
-            COLORS.secondary :
-            COLORS.darkGray
-            ),
-marginHorizontal:SIZES.radius
-              }
-          }>{topping}</Text>
-          </TouchableOpacity>
-        )
-      )
-    )
-  }
-
-
+ 
  return (
    <View style={{ ...styles.container }}>
      {/* Header */}
-     <View style={{ backgroundColor: COLORS.primary, height: "40%" }}>
+     <View style={{ ...tailwind("w-full rounded-b-full"), height: "40%", backgroundColor:COLORS.primary }}>
        <ImageBackground
          source={images.vegie}
-         style={{ ...tailwind("w-full h-full"), tintColor: COLORS.primary }}
-         resizeMode="cover"
+         style={[
+           {
+             ...tailwind("w-full h-full rounded-r-full "),
+             backgroundColor: COLORS.primary,
+           },
+           {
+        transform: [
+          { rotateZ: "90deg" },
+          { translateX: -60 },
+          { translateY: 2 },
+          { scaleY: 1.1 },
+          { scaleX: 1.1 },
+        
+
+        ]
+      }
+         ]}
+         resizeMode="contain"
        />
+      
        {/* Title */}
        <View
          style={{
            ...tailwind("text-center items-center absolute w-full"),
-           top: "26%",
+           top: "30%",
          }}
        >
          <Text style={tailwind("text-white font-bold capitalize text-3xl")}>
@@ -185,17 +164,22 @@ marginHorizontal:SIZES.radius
        </View>
 
        {renderHeader()}
-       <Image
-         source={image}
-         style={{
-           ...tailwind("w-44 h-44 absolute"),
-           left: "26%",
-           right: "26%",
-           top: "70%",
+
+      <View style={{...tailwind('w-full items-center justify-center absolute'), top:"75%"}}>
+      <Image
+           source={image}
+           style={{
+           ...tailwind("w-44 h-44 rounded-full"),
+           
          }}
-         resizeMode="cover"
-       />
+           resizeMode="contain"
+         />
+      </View>
+    
+    
      </View>
+
+    
 
      {/* Dish & Description */}
      <ScrollView showsVerticalScrollIndicator={false} style={tailwind("mt-24")}>
@@ -212,7 +196,7 @@ marginHorizontal:SIZES.radius
            Quantity
          </Text>
          <View style={tailwind("flex-row justify-start items-center pt-4")}>
-          {/* Plus Button */}
+           {/* Plus Button */}
            <TouchableOpacity
              onPress={() => {
                dispatch(
@@ -221,13 +205,11 @@ marginHorizontal:SIZES.radius
                      let qnt = quantity;
                      qnt += 1;
                      qnt < 1 ? (qnt = 1) : qnt;
-                     dispatch(incDecPrice(formatPrice(baseCost * qnt)));
+                     dispatch(incDecPrice(util.formatPrice(baseCost * qnt)));
                      return qnt;
                    })()
                  )
                );
-
-             
              }}
              style={tailwind(`
          rounded-full
@@ -248,7 +230,7 @@ marginHorizontal:SIZES.radius
 
            <Text style={tailwind("ml-4 text-xl font-bold")}>{quantity}</Text>
 
-            {/* Minus button */}
+           {/* Minus button */}
            <TouchableOpacity
              onPress={() => {
                dispatch(
@@ -257,13 +239,11 @@ marginHorizontal:SIZES.radius
                      let qnt = quantity;
                      qnt -= 1;
                      qnt < 1 ? (qnt = 1) : qnt;
-                     dispatch(incDecPrice(formatPrice(baseCost * qnt)));
+                     dispatch(incDecPrice(util.formatPrice(baseCost * qnt)));
                      return qnt;
                    })()
                  )
                );
-
-      
              }}
              style={{
                ...tailwind(
@@ -298,18 +278,11 @@ marginHorizontal:SIZES.radius
            Add Extra Toppings
          </Text>
 
-         <ScrollView
-           horizontal
-           showsHorizontalScrollIndicator={false}
-           style={tailwind(
-             `
-       my-6
-       h-10
-      `
-           )}
-         >
-           {renderToppingTags(toppings)}
-         </ScrollView>
+         {/* Horizontal Filter */}
+
+         <View style={tailwind("w-full my-4")}>
+           <HorizontalFilter data={toppings} />
+         </View>
        </View>
      </ScrollView>
 
@@ -350,21 +323,18 @@ marginHorizontal:SIZES.radius
               text-xl
             `)}
          >
-           $ {price === 0 ? formatPrice(baseCost) : price}
+           $ {price === 0 ? util.formatPrice(baseCost) : price}
          </Text>
        </View>
 
        {/* Button */}
        <TouchableOpacity
          onPress={() => {
-           navigation.navigate("Cart", 
-           {
-             foodName, 
-             cost: (price === 0 ? formatPrice(baseCost) : price),
-             quantity
-           }
-
-           )
+           navigation.navigate("Cart", {
+             foodName,
+             cost: price === 0 ? util.formatPrice(baseCost) : price,
+             quantity,
+           });
          }}
          style={{
            ...tailwind(`

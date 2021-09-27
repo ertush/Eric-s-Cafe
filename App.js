@@ -5,7 +5,8 @@ import { Provider } from 'react-redux'
 import store from './store'
 
 // screens
-import { OnBoarding, Product, Order, Cart, Favourites, MainMenu } from "./screens";
+import { OnBoarding, Product, Order, Cart, Favourites, MainMenu, SubmitOrder, TrackOrder } from "./screens";
+
 // import { useFonts } from 'expo-font';
 
 const theme = {
@@ -24,6 +25,7 @@ const App = () => {
     // if(!loaded){
     //     return null;
     // }
+
     return (
       <Provider store={store}>
         <NavigationContainer theme={theme}>
@@ -36,9 +38,12 @@ const App = () => {
             <Stack.Screen name="Product" component={Product} />
             <Stack.Screen name="OnBoarding" component={OnBoarding} />
             <Stack.Screen name="Order" component={Order} />
+            <Stack.Screen name="SubmitOrder" component={SubmitOrder} />
+            <Stack.Screen name="TrackOrder" component={TrackOrder} />
             <Stack.Screen name="Cart" component={Cart} />
             <Stack.Screen name="Favourites" component={Favourites} />
             <Stack.Screen name="MainMenu" component={MainMenu} />
+
           </Stack.Navigator>
         </NavigationContainer>
       </Provider>

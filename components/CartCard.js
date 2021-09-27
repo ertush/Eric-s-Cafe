@@ -10,7 +10,7 @@ import {
 import tailwind from 'tailwind-rn'
 import { icons,  COLORS, } from '../constants'
 import Card from './Card'
-import formatPrice from '../utils'
+import util from '../utils'
 import {data} from '../constants'
 
 
@@ -86,13 +86,13 @@ const CartCard = ({ id, image, title, cost, amount, deleteCb, imageStyle, addToS
       {/* Card */}
       <Card cardStyles={styles.container}>
         {/* Image */}
-        <View style={{width:"auto", ...tailwind(`flex-row flex-1 ${deleteCardBtn ? 'justify-center' : 'justify-start'} items-center`)}}>
-          <Image source={image} style={{ ...styles.image ,...imageStyle, marginLeft: deleteCardBtn && id !== 1 ? "25%" : 0}} />
+        <View style={{ ...tailwind(`flex-row w-full flex-1 justify-start items-center`)}}>
+          <Image source={image} style={{ ...styles.image ,...imageStyle, ...tailwind('border-2')}} />
 
           {/* Title & price */}
           <View style={styles.detailsWrapper}>
             <Text style={{...styles.title, width: deleteCardBtn ? "70%" : "100%"}}>{title}</Text>
-            <Text style={styles.price}>${formatPrice(price)}</Text>
+            <Text style={styles.price}>${util.formatPrice(price)}</Text>
           </View>
         </View>
 
@@ -159,8 +159,8 @@ const styles = StyleSheet.create({
   mt-6
   mb-4
   `),
+  width:"auto",
   ...COLORS.shadow,
-  width:"auto"
 },
 
   image: tailwind(`

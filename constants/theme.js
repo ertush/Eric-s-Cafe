@@ -6,6 +6,8 @@ export const COLORS = {
   // base colors / theme
   primary: "#55a38f", // Green
   secondary: "#fd875d",   // deep-Orange
+  secondaryLight: "#ff9164",
+  secondaryDark: "#fb724b",
 
     // other colors
   darkblue: "#363c5e",
@@ -18,13 +20,13 @@ export const COLORS = {
 
   //shadow
   shadow: {
-    shadowColor: "#ffe",
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 1
+      height: 10
     },
     shadowOpacity: 0.1,
-    shadowRadius: 0.65,
+    shadowRadius: 11,
     elevation: 5
   }
 };

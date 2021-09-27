@@ -1,3 +1,5 @@
 import {formatPrice} from './formatPrice'
+import {getDelta} from './mapDelta'
 
-export default formatPrice
+
+export default {formatPrice, getDelta}

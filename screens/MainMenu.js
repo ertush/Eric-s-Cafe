@@ -11,10 +11,10 @@ import {
 }
   from 'react-native'
 import Constants from 'expo-constants'
-import {Card} from '../components'
+import {Card, FooterMenu} from '../components'
 import { StatusBar } from 'expo-status-bar';
 import { images, data, icons, COLORS, SIZES } from '../constants'
-import formatPrice from '../utils'
+import util from '../utils';
 
 
 
@@ -81,7 +81,7 @@ const RenderCard = ({foodName, ingredients, description, image, imageStyle, calo
           `), 
             color: COLORS.deepBlue
           }}>
-          ${formatPrice(price)}
+          ${util.formatPrice(price)}
           </Text>
           </View>
           
@@ -99,8 +99,6 @@ const RenderCard = ({foodName, ingredients, description, image, imageStyle, calo
     }
 
 const MainMenu = ({navigation}) => {
-
-  const [menuBtnFocus, setMenuBtnFocus] = React.useState(true)
 
 
   const rating = 4.8
@@ -171,7 +169,7 @@ const MainMenu = ({navigation}) => {
 
               <View style={styles.priceWrapper}>
                 <Text style={styles.deliveryText}>delivery</Text>
-                <Text style={styles.price}>${formatPrice(price)}</Text>
+                <Text style={styles.price}>${util.formatPrice(price)}</Text>
               </View>
             </View>
 
@@ -198,58 +196,6 @@ const renderMenuBody = ({item}) => {
   }
 
 
-  function renderMenuFooter (navigation) {
-    const styles = StyleSheet.create({
-      container:tailwind(`
-        flex-row
-        mt-4
-        justify-evenly
-        items-center
-        bg-white
-        rounded-full
-        px-1
-        py-6
-        absolute
-        bottom-1
-        w-full
-      `),
-      
-      image:{...tailwind(`
-      w-6
-      h-6
-      `), 
-        tintColor: COLORS.darkGray
-      }
-
-    })
-
-    return (
-      <View style={styles.container}>
-      <TouchableOpacity onPress={({focused}) => {
-          focused ? setMenuBtnFocus(true) : setMenuBtnFocus(false)
-      }}>
-        <Image source={icons.home} style={{...tailwind('w-7 h-7'), tintColor: menuBtnFocus ? COLORS.secondary : COLORS.darkGray }}/>
-      </TouchableOpacity>
-      <TouchableOpacity>
-        <Image source={icons.person} style={styles.image}/>
-      </TouchableOpacity>
-      <TouchableOpacity>
-        <Image source={icons.love} style={styles.image}
-            onPress={() => { navigation.navigate('Favourites')}}
-        />
-      </TouchableOpacity>
-      <TouchableOpacity>
-        <Image source={icons.cart} style={styles.image}
-           onPress={() => { navigation.navigate('Cart', { 
-           foodName: "",
-           cost : 0,
-           quantity : 0}) }}
-        />
-      </TouchableOpacity>
-      </View>
-    )
-  }
-
 
   return (
 
@@ -261,15 +207,7 @@ const renderMenuBody = ({item}) => {
         <Image source={icons.back} style={styles.icon} />
       </TouchableOpacity>
 
-        {/* Cart  */}
-      <TouchableOpacity style={styles.cart} onPress={() => { navigation.navigate('Cart', { 
-           foodName: "",
-           cost : 0,
-           quantity : 0}) }}>
-        <Image source={icons.cart} style={styles.icon} />
-      </TouchableOpacity>
-     
-
+  
 
     <View style={styles.menuContainer}>
         {renderMenuHeader()}
@@ -290,8 +228,7 @@ const renderMenuBody = ({item}) => {
       </View>
 
       {/* Footer */}
-
-          {renderMenuFooter()}
+      <FooterMenu  focusIconBtn={'MainMenu'} navigation={navigation} />
 
   
 

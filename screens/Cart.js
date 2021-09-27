@@ -13,12 +13,12 @@ import {
 import Constants from 'expo-constants'
 import { StatusBar } from 'expo-status-bar';
 import { data, icons, COLORS, SIZES } from '../constants'
-import { CartCard } from '../components'
+import { CartCard, Heading } from '../components'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { addDeleteCart } from '../store/cart'
 import { addSubtractToSubTotal } from '../store/subTotal'
-import formatPrice from '../utils';
+import util from '../utils';
 import { incDecPrice } from '../store/price';
 import { incDecQuantity } from '../store/quantity';
 
@@ -246,7 +246,7 @@ const Cart = ({ navigation, route}) => {
         </View>
 
         <View style={styles.priceWrapper}>
-         <Text style={styles.priceLabel}>${formatPrice(subTotal)}</Text>
+         <Text style={styles.priceLabel}>${util.formatPrice(subTotal)}</Text>
          <Text style={{...styles.priceLabel, ...tailwind('mt-4')}}>${deliveryCost}</Text>
        </View>
        </View>
@@ -254,7 +254,7 @@ const Cart = ({ navigation, route}) => {
        {/* Total Section */}
        <View style={styles.totalWrapper}>
          <Text style={styles.totalLabel}>Total</Text>
-         <Text style={styles.total}>${(subTotal === 0 ? formatPrice(0) : formatPrice(subTotal + deliveryCost))}</Text>
+         <Text style={styles.total}>${(subTotal === 0 ? util.formatPrice(0) : util.formatPrice(subTotal + deliveryCost))}</Text>
        </View>
     </View>
     )
@@ -263,13 +263,8 @@ const Cart = ({ navigation, route}) => {
   return (
     <View style={styles.container}>
 
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => { navigation.goBack() }} style={styles.backBtn}>
-          <Image source={icons.back} style={styles.chevron} />
-        </TouchableOpacity>
-        <Text style={styles.title}>Your cart</Text>
-      </View>
+      {/* Screen Heading */}
+      <Heading title={"Your Cart"} navigation={navigation}/>
 
       {/* Cards */}
       <ScrollView
@@ -306,42 +301,6 @@ const styles = StyleSheet.create({
       marginTop: Constants.statusBarHeight * 2
     },
 
-  header: {
-    ...tailwind(`
-    flex-row
-    justify-between
-    items-center
-    pl-2
-    `), 
-    width: "68%"
-  },
-
-  backBtn: {...tailwind(`
-      flex-row 
-      justify-center 
-      items-center 
-      p-2 
-      bg-white 
-      rounded-full
-    `),
-    ...COLORS.shadow
-  },
-
- chevron: {
-    ...tailwind(`
-    w-5
-    h-5
-    `), 
-    tintColor: COLORS.secondary
-  },
-
-  title: {
-    ...tailwind(`
-    text-3xl
-    `), 
-    fontWeight: "700",
-    color: COLORS.deepBlue
-  },
 
   cardSection: tailwind(`
       flex-1
